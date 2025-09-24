@@ -101,7 +101,7 @@ const processingSteps = [
   // Simulate processing steps with delays
   for (let i = 0; i < processingSteps.length; i++) {
     setProcessingStep(i);
-    await new Promise(resolve => setTimeout(resolve, 3500)); // Slightly faster
+    await new Promise(resolve => setTimeout(resolve, 1500)); // Slightly faster
   }
 
   console.log('Processing photos:', {
