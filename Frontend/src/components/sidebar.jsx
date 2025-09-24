@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Shirt, Heart, ShoppingBag, Search, Grid, List } from 'lucide-react';
 
 const sampleProducts = [
-  { id: 1, name: "Red Summer Dress", category: "Dress", image: "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcSLnZa4uG4q-nazDSbxWNo2sVCOSP5L12Eu_J8YsGVHfhngM0XVCqJrQPCH2Eo03gwqMYwTXv3qYUsRuEaN2_D087ABY9BM9QqtLj9N71yFy4x4JcZMEZWfcA&usqp=CAc" },
+  { id: 1, name: "Red Summer Dress", category: "Dress", image: "/Summer_dress.png" },
   { id: 2, name: "Casual Blue Jeans", category: "Jeans", image: "https://assets.myntassets.com/h_1440,q_75,w_1080/v1/assets/images/29742550/2024/5/23/7f484c2b-a6bd-45e8-9b3d-9e3b55dead411716462342911FREAKINSWomenWideLegHigh-RiseMildlyDistressedLightFadeJeans1.jpg", brand: "Levi's" },
   { id: 3, name: "White Cotton Shirt", category: "Shirt", image: "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcScJ7wiclSPu9c2_s7oa0LVhRYw3PoW2--6Oxv6Dl2k_rvo4fZ2YUry2pTAbUMtQPaMIWlwsqnI7D1_V1lvbhwhO1ateHZPIJmA8qdc5zrD1Ri2XlvOTCXoeQ2k&usqp=CAc", brand: "H&M" },
   { id: 4, name: "Black Leather Jacket", category: "Jacket", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcREw6a0gW5ZkphKTjncNvveHd27rWR84-dilQ&s", brand: "Forever21" },
@@ -17,7 +17,7 @@ const sampleProducts = [
 
 
 
-const MyntraWardrobe = () => {
+const MyntraWardrobe = ({ onTryOnClick, showTryOnButton }) => {
   const [products] = useState(sampleProducts);
   const [selectedItems, setSelectedItems] = useState([]);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -105,11 +105,11 @@ const MyntraWardrobe = () => {
         )}
       </AnimatePresence>
       <div className="relative overflow-hidden">
-        <img 
-          src={product.image} 
-          alt={product.name} 
-          className={`w-full object-cover transition-transform duration-300 hover:scale-110 ${screenSize === 'small' ? 'h-24' : 'h-28'}`} 
-          loading="lazy" 
+        <img
+          src={product.image}
+          alt={product.name}
+          className={`w-full object-cover transition-transform duration-300 hover:scale-110 ${screenSize === 'small' ? 'h-24' : 'h-28'}`}
+          loading="lazy"
         />
       </div>
       <div className="p-2 space-y-0.5">
@@ -135,7 +135,7 @@ const MyntraWardrobe = () => {
             <p className="text-xs text-gray-500">{filteredProducts.length} items</p>
           </div>
         </div>
-        
+
         {/* Remove All Button */}
         {selectedItems.length > 0 && (
           <motion.button
@@ -214,7 +214,7 @@ const MyntraWardrobe = () => {
     >
 
       {/* Hamburger */}
-      <motion.button 
+      <motion.button
         whileHover={{ scale: 1.05, boxShadow: "0 0 25px rgba(255, 63, 108, 0.4)" }}
         whileTap={{ scale: 0.95 }}
         className="fixed top-4 left-4 z-50 p-2.5 bg-gradient-to-r from-[#ff3f6c] to-[#ff6b9d] text-white rounded-xl shadow-lg"
@@ -228,7 +228,7 @@ const MyntraWardrobe = () => {
 
       {/* Cool Selected Items Bar */}
       <AnimatePresence>
-        {selectedItems.length > 0 && (
+        {selectedItems.length > 0 && showTryOnButton && (
           <motion.div
             initial={{ y: -100, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
@@ -240,14 +240,14 @@ const MyntraWardrobe = () => {
             <div className="absolute inset-0 rounded-2xl opacity-20 blur-xl animate-pulse"></div>
             <div className="absolute inset-0 bg-gradient-to-r from-[#ff3f6c]/80 to-purple-500/80 rounded-2xl"></div>
             <div className="absolute inset-0 bg-gradient-to-r from-white/10 to-white/5 rounded-2xl backdrop-blur-xl"></div>
-            
+
             {/* Animated Border */}
             <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-pink-400 via-pink-600 to-pink-400 p-[1px]">
               <div className="w-full h-full bg-transparent rounded-2xl"></div>
             </div>
-            
+
             {/* Main Content */}
-            <motion.div 
+            <motion.div
               className="relative bg-white/90 backdrop-blur-xl rounded-2xl px-3 py-1 shadow-2xl border border-white/20"
               style={{
                 background: "pink"
@@ -272,12 +272,12 @@ const MyntraWardrobe = () => {
                             alt={item.name}
                             className="w-10 h-10 object-cover rounded-full border-3 border-white shadow-lg ring-2 ring-pink-200/50"
                           />
-                
+
                         </motion.div>
                       ))}
                     </AnimatePresence>
                     {selectedItems.length > 6 && (
-                      <motion.div 
+                      <motion.div
                         initial={{ scale: 0 }}
                         animate={{ scale: 1 }}
                         className="w-12 h-12 bg-gradient-to-br from-slate-600 to-slate-700 rounded-full flex items-center justify-center text-sm font-bold text-white border-3 border-white shadow-lg ring-2 ring-slate-200/50"
@@ -289,17 +289,27 @@ const MyntraWardrobe = () => {
                 </div>
 
                 {/* Try On Button with Enhanced Styling */}
-                <motion.button
-                  whileHover={{ 
-                    scale: 1.02,
-                    boxShadow: "0 8px 32px rgba(255, 63, 108, 0.4)"
-                  }}
-                  whileTap={{ scale: 0.98 }}
-                  className="bg-pink-500 hover:from-purple-500 hover:to-[#ff3f6c] text-white px-6 py-2 rounded-xl font-semibold text-sm shadow-xl transition-all duration-300 flex items-center gap-2 border border-white/20"
-                >
-                  <ShoppingBag className="w-3 h-3" />
-                  Try On
-                </motion.button>
+                {/* Try On Button with Enhanced Styling - Only show when conditions are met */}
+                {showTryOnButton && (
+                  <motion.button
+                    initial={{ scale: 0, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    exit={{ scale: 0, opacity: 0 }}
+                    whileHover={{
+                      scale: 1.05,
+                      boxShadow: "0 8px 32px rgba(255, 63, 108, 0.4)"
+                    }}
+                    whileTap={{ scale: 0.98 }}
+                    className="bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 text-white px-6 py-2 rounded-xl font-semibold text-sm shadow-xl transition-all duration-300 flex items-center gap-2 border border-white/20 relative overflow-hidden"
+                    onClick={() => {
+                      onTryOnClick();
+                    }}
+                  >
+                    <div className="absolute inset-0 bg-gradient-to-r from-white/20 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-300"></div>
+                    <ShoppingBag className="w-4 h-4 relative z-10" />
+                    <span className="relative z-10">Try On</span>
+                  </motion.button>
+                )}
               </div>
             </motion.div>
           </motion.div>
@@ -309,10 +319,10 @@ const MyntraWardrobe = () => {
       {/* Mobile Backdrop */}
       <AnimatePresence>
         {isSidebarOpen && (screenSize === 'small' || screenSize === 'medium') && (
-          <motion.div 
-            initial={{ opacity: 0 }} 
-            animate={{ opacity: 1 }} 
-            exit={{ opacity: 0 }} 
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
             className="fixed inset-0 bg-black/40 backdrop-blur-sm z-30"
           />
         )}
